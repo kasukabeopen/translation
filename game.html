@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="game">
+    <h1>Welcome to the Typing Game!</h1>
+    
+    <!-- Character Display -->
+    <div class="player-character">
+      <h2>Your Character: <span id="character-name"></span></h2>
+      <img id="character-img" src="" alt="Character">
+    </div>
+
+    <!-- Typing Game Section -->
+    <div class="game-section">
+      <h3>Type this word:</h3>
+      <div id="word-display"></div>
+      <input type="text" id="typing-input" placeholder="Type the word..." oninput="checkTyping()">
+      <p id="message"></p>
+    </div>
+
+    <div class="score">
+      <p>Score: <span id="score">0</span></p>
+    </div>
+  </div>
+
+  <script>
+    // Retrieve selected character from localStorage
+    const selectedCharacter = localStorage.getItem('character');
+    
+    if (selectedCharacter) {
+      // Display the selected character image and name
+      document.getElementById('character-name').textContent = selectedCharacter;
+      document.getElementById('character-img').src = selectedCharacter.toLowerCase() + '.png';  // Assuming images are named like "monster1.png"
+    } else {
+      alert('No character selected! Please go back and select a character.');
+      window.location.href = 'character-selection.html';  // Redirect to character selection page
+    }
+
+    // Typing Game Logic
+    const words = ['dragon', 'unicorn', 'wizard', 'monster', 'goblin'];
+    let currentWord = '';
+    let score = 0;
+
+    // Function to start the game with a random word
+    function startTypingGame() {
+      currentWord = words[Math.floor(Math.random() * words.length)];
+      document.getElementById('word-display').textContent = currentWord;
+    }
+
+    // Function to check user's input
+    function checkTyping() {
+      const input = document.getElementById('typing-input').value;
+      if (input === currentWord) {
+        score += 10;
+        document.getElementById('score').textContent = score;
+        document.getElementById('message').textContent = 'Correct! Keep going!';
+        document.getElementById('typing-input').value = '';  // Clear the input box
+        startTypingGame();  // Get a new word
+      }
+    }
+
+    // Start the typing game as soon as the page loads
+    startTypingGame();
+  </script>
+</body>
+</html>
